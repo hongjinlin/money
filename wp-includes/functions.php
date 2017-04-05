@@ -5638,3 +5638,37 @@ function wp_cache_get_last_changed( $group ) {
 
 	return $last_changed;
 }
+function wp_getElementByCSS($d,$c,$charset,$outer,$index) {
+	$s = "";
+	if($index==0) {
+		foreach( $d->find($c) as $e) {
+			if($outer==1)$s .= $e->outertext;
+			else $s .= $e->innertext;
+		}
+	} else {
+		$elements = $d->find($c);
+		$i=0;
+		if($index>=1)$j = $index-1;
+		elseif($index<0)$j = count($elements)+$index;
+		$e = $elements[$i];
+		if($e!=null) {
+			if($outer==1) $s .= $e->outertext;
+			else $s .= $e->innertext;
+		}
+		unset($elements);
+		unset($e);
+	}
+	return $s;
+}
+function wp_getMatchContentByRule($s,$m1,$m2) {
+	$p0=stripos($s,trim($m1));
+	if($outer==1) $start=$p0;
+	else $start=$p0+strlen($m1);
+	$p1=@stripos($s,trim($m2),$start);
+	if($p0 === false || $p1=== false) {
+		return NULL;
+	}
+	if($outer==1) $length = $p1+strlen($m2)-$start;
+	else $length = $p1-$start;
+	return substr($s,$start,$length);
+}
